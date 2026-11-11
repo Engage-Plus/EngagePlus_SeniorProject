@@ -22,7 +22,8 @@ All routes under `/api`. Auth = session cookie. 401 if not signed in, 403 if not
 | GET | /following | Followed orgs | F6 |
 | POST | /orgs/:id/mute | `{muted: bool}` | F6 |
 | POST | /users/schedule | Replace schedule blocks | F12 |
-| POST | /feedback/:eventId | `{thumbsUp}` | F5 |
+| GET | /feedback/pending | RSVP'd events that ended in the last 14 days, not yet rated (max 3) | F5 |
+| POST | /feedback/:eventId | `{thumbsUp}` upsert; 403 if not RSVP'd, 409 if not ended | F5 |
 | POST | /chat | `{message}` → events + reasons | F16 |
 | GET | /friends · POST /friends/requests · POST /friends/:id/accept | | F17 |
 | GET | /events/:id/friends-going | Accepted friends, excludes hidden | F17 |

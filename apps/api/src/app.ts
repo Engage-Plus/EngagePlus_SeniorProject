@@ -5,12 +5,15 @@ import express, { type Express, type RequestHandler } from "express";
 import cookieParser from "cookie-parser";
 import { db, pingDb } from "./db.js";
 import { chatRouter } from "./routes/chat.js";
+import { feedbackRouter } from "./routes/feedback.js";
 import { healthRouter, type PingDb } from "./routes/health.js";
 import { parseCaptionRouter } from "./routes/parseCaption.js";
 import { denyUntilAuthIsWired } from "./middleware/auth.js";
 import { errorHandler, notFound } from "./middleware/errors.js";
 import { prismaCandidateSource } from "./services/chat/dbSource.js";
 import type { CandidateSource } from "./services/chat/index.js";
+import type { FeedbackRepo } from "./services/feedback/index.js";
+import { prismaFeedbackRepo } from "./services/feedback/prismaRepo.js";
 import type { JsonModel } from "./services/gemini.js";
 
 export interface AppDeps {
@@ -23,6 +26,8 @@ export interface AppDeps {
   pingDb?: PingDb;
   /** Events for POST /chat. Defaults to published events from Prisma. */
   chatCandidates?: CandidateSource;
+  /** Data access for post-event feedback. Defaults to Prisma. */
+  feedbackRepo?: FeedbackRepo;
 }
 
 export function createApp(deps: AppDeps = {}): Express {
@@ -45,6 +50,7 @@ export function createApp(deps: AppDeps = {}): Express {
       loadCandidates: deps.chatCandidates ?? prismaCandidateSource(db),
     }),
   );
+  app.use(feedbackRouter({ requireUser, now: deps.now, repo: deps.feedbackRepo ?? prismaFeedbackRepo(db) }));
   // More feature routers (auth, events, orgs, ...) get mounted here.
 
   app.use(notFound);
