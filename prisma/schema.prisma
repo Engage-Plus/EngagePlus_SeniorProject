@@ -1,0 +1,224 @@
+// Engage+ Prisma schema — 12 models (TR3, TC-54)
+// Owner: AD. Other members request changes by PR.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum Category {
+  ACADEMIC
+  CULTURAL
+  PROFESSIONAL
+  SOCIAL
+  OTHER
+}
+
+enum SwipeTarget {
+  EVENT
+  ORG
+}
+
+enum SwipeAction {
+  RIGHT // RSVP (event) or follow (org)
+  LEFT  // pass / skip
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+}
+
+model User {
+  id             String    @id @default(cuid())
+  msOid          String?   @unique // Microsoft object id (stable login key)
+  email          String    @unique
+  name           String
+  role           Role      @default(STUDENT)
+  major          String?
+  classYear      Int?
+  interests      Category[]
+  involvement    String?   // quiz answer, e.g. "leadership", "casual"
+  quizDoneAt     DateTime?
+  hideRsvps      Boolean   @default(false) // F18
+  hasBadge       Boolean   @default(false) // F24
+  scheduleUpdatedAt DateTime?              // F23 semester nudge
+  createdAt      DateTime  @default(now())
+
+  managedOrgs    OrgManager[]
+  swipes         Swipe[]
+  follows        Follow[]
+  scheduleBlocks ScheduleBlock[]
+  feedback       EventFeedback[]
+  friendsSent    Friendship[] @relation("requester")
+  friendsRecv    Friendship[] @relation("addressee")
+  referralsMade  Referral[]   @relation("referrer")
+  referredBy     Referral?    @relation("referred")
+}
+
+model Org {
+  id               String    @id @default(cuid())
+  name             String
+  description      String?
+  category         Category
+  orgEmail         String    @unique
+  emailVerifiedAt  DateTime?            // F9 one-time code
+  instagramHandle  String?
+  lastFollowerCount Int?                // F11
+  flaggedForReview Boolean   @default(false) // F11
+  createdAt        DateTime  @default(now())
+
+  managers   OrgManager[]
+  events     Event[]       @relation("primaryOrg")
+  cohosted   EventCohost[]
+  followers  Follow[]
+  recurrences EventRecurrence[]
+}
+
+model OrgManager {
+  id        String   @id @default(cuid())
+  orgId     String
+  userId    String
+  isFounder Boolean  @default(false)
+  isStaff   Boolean  @default(false) // advisor etc. (US-4.3)
+  createdAt DateTime @default(now())
+
+  org  Org  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, userId])
+}
+
+model Event {
+  id           String    @id @default(cuid())
+  orgId        String    // primary org: only it can edit/delete (F19)
+  title        String
+  description  String?
+  category     Category
+  location     String?
+  startsAt     DateTime  // stored UTC
+  endsAt       DateTime
+  flyerUrl     String?
+  sourceCaption String?  // raw Instagram caption
+  publishedAt  DateTime?
+  recurrenceId String?
+  createdAt    DateTime  @default(now())
+
+  org        Org              @relation("primaryOrg", fields: [orgId], references: [id], onDelete: Cascade)
+  recurrence EventRecurrence? @relation(fields: [recurrenceId], references: [id], onDelete: SetNull)
+  cohosts    EventCohost[]
+  swipes     Swipe[]
+  feedback   EventFeedback[]
+
+  @@index([startsAt])
+  @@index([category])
+}
+
+model Swipe {
+  id        String      @id @default(cuid())
+  userId    String
+  target    SwipeTarget
+  eventId   String?
+  orgId     String?
+  action    SwipeAction
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event? @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  // one RSVP per student per event, changeable (US-3.2, TC-13)
+  @@unique([userId, eventId])
+}
+
+model Follow {
+  id        String   @id @default(cuid())
+  userId    String
+  orgId     String
+  muted     Boolean  @default(false) // F6
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Org  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+}
+
+model ScheduleBlock {
+  id        String @id @default(cuid())
+  userId    String
+  dayOfWeek Int    // 0 = Sunday
+  startMin  Int    // minutes after midnight, America/New_York
+  endMin    Int
+  label     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model EventFeedback {
+  id        String   @id @default(cuid())
+  userId    String
+  eventId   String
+  thumbsUp  Boolean
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+}
+
+model Friendship {
+  id          String           @id @default(cuid())
+  requesterId String
+  addresseeId String
+  status      FriendshipStatus @default(PENDING)
+  createdAt   DateTime         @default(now())
+
+  requester User @relation("requester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee User @relation("addressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, addresseeId])
+}
+
+model Referral {
+  id         String    @id @default(cuid())
+  referrerId String
+  referredId String    @unique
+  qualifiedAt DateTime? // OAuth done + 10 swipes (F24)
+  createdAt  DateTime  @default(now())
+
+  referrer User @relation("referrer", fields: [referrerId], references: [id], onDelete: Cascade)
+  referred User @relation("referred", fields: [referredId], references: [id], onDelete: Cascade)
+}
+
+model EventCohost {
+  eventId String
+  orgId   String
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  org   Org   @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, orgId])
+}
+
+model EventRecurrence {
+  id        String   @id @default(cuid())
+  orgId     String
+  rrule     String   // RFC 5545, e.g. "FREQ=WEEKLY;BYDAY=TU"
+  untilDate DateTime?
+  createdAt DateTime @default(now())
+
+  org    Org     @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  events Event[]
+}
