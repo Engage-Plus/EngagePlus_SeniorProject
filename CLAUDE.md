@@ -94,7 +94,7 @@ Priority: Must = steps 1–24 · Could = steps 25–30. Update only your own row
 | 7 | F7 | Notification service | R2 R9 | Must | JM | F7_01, F7_02 | TC-09, 43 | ⬜ | | Channel decision D2 |
 | 8 | F12 | Class schedule upload + conflict filter | R5 | Must | PF | F12_01, F12_02 | TC-23, 24 | ⬜ | | |
 | 9 | F13 | Category + interest filters | R5 | Must | PF | F13_01 | TC-25 | ⬜ | | |
-| 10 | F14 | AI caption parser (Gemini) | R6 | Must | DM | F14_01 | TC-27 | 🟨 | `F14_01-caption-parser` | DM (Claude) building; stacked on #1 |
+| 10 | F14 | AI caption parser (Gemini) | R6 | Must | DM | F14_01 | TC-27 | 🟦 | [#2](https://github.com/Engage-Plus/EngagePlus_SeniorProject/pull/2) | Stacked on #1. Endpoint 401 until F21 wires `requireUser` |
 | 11 | F10 | Event posting form + flyer upload | R4 R6 | Must | SM | F10_01–F10_03 | TC-20, 28, 29 | ⬜ | | |
 | 12 | F3 | AI recommendation engine | R1 | Must | DM | F3_01 | TC-02 | ⬜ | | Deterministic score + AI re-rank |
 | 13 | F16 | AI chat assistant | R7 | Should | DM | F16_01–F16_03 | TC-34, 35, 36 | ⬜ | | |
