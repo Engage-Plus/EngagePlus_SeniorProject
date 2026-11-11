@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Engage+ Share",
+  "version": "0.1.0",
+  "description": "Share your organization's Instagram post to Engage+ as an event draft.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["https://www.instagram.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Share to Engage+"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.instagram.com/p/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

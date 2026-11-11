@@ -1,0 +1,37 @@
+# TR2 / TC-53: one command starts front end, back end and database
+# Usage: docker compose up --build
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: engageplus
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  api:
+    build: ./apps/api
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/engageplus
+      DIRECT_URL: postgresql://postgres:postgres@db:5432/engageplus
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    command: sh -c "npx prisma migrate deploy && npm run dev"
+
+  web:
+    build: ./apps/web
+    environment:
+      VITE_API_URL: http://localhost:4000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+
+volumes:
+  dbdata:

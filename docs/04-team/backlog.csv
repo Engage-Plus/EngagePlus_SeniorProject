@@ -1,0 +1,49 @@
+Backlog ID,Task,User story,Requirement,Owner,Acceptance test,Priority,Status
+F1_01,"Build onboarding quiz (interests, involvement type, major, year)",US-1.1,R1,PF,TC-01,Must,To do
+F3_01,"Rank feed by quiz answers, then by swipe history",US-1.2,R1,DM,TC-02,Must,To do
+F2_01,Build swipe card stack for event and org cards,US-1.3,R1,PF,TC-03,Must,To do
+F4_01,Show trending feed when no quiz or swipe data exists,US-1.4,R1,PF,TC-04,Must,To do
+F5_01,Prompt thumbs up/down after an RSVP'd event ends,US-1.5,R1,DM,TC-05,Must,To do
+F1_02,Let students retake the quiz,US-1.6,R1,PF,TC-06,Must,To do
+F2_02,Follow an org by swiping right on its card,US-2.1,R2,PF,TC-07,Must,To do
+F6_01,Build Following page,US-2.2,R2,JM,TC-08,Must,To do
+F7_01,Notify followers when an org publishes an event,US-2.3,R2,JM,TC-09,Must,To do
+F6_02,Add per-org mute and unmute toggle,US-2.4,R2,JM,TC-10,Must,To do
+F23_01,Generate weekly what's-happening digest,US-2.5,R13,JM,TC-11,Could,To do
+F2_03,Record RSVP on right swipe of an event,US-3.1,R3,PF,TC-12,Must,To do
+F2_04,"Allow one RSVP per student per event, changeable",US-3.2,R3,PF,TC-13,Must,To do
+F8_01,Build per-event analytics page with RSVP count,US-3.3,R3,SM,TC-14,Must,To do
+F21_01,Restrict analytics to the org's managers,US-3.4,R11,AD,TC-15,Must,To do
+F8_02,Show post-event feedback totals in analytics,US-3.5,R3,SM,TC-16,Must,To do
+F21_02,"Sign in with Microsoft, restricted to Howard's tenant",US-4.1,R11,AD,TC-17,Must,To do
+F9_01,Gate org creation behind a student session and org email,US-4.2,R4,AD,TC-18,Must,To do
+F9_02,"Invite additional managers, including non-student staff",US-4.3,R4,AD,TC-19,Must,To do
+F10_01,Build event create and edit form with flyer upload,US-4.4,R4,SM,TC-20,Must,To do
+F11_01,Flag fast follower growth for manual review,US-4.5,R4,AD,TC-21,Must,To do
+F25_01,"Build aggregated, anonymized admin analytics view",US-4.6,R15,DM,TC-22,Could,To do
+F12_01,Build class schedule upload,US-5.1,R5,PF,TC-23,Must,To do
+F12_02,Hide events that conflict with class blocks,US-5.2,R5,PF,TC-24,Must,To do
+F13_01,Add category filter to the swipe stack,US-5.3,R5,PF,TC-25,Must,To do
+F23_02,Prompt schedule re-upload each semester,US-5.4,R13,JM,TC-26,Could,To do
+F14_01,Parse pasted caption with Gemini into structured fields,US-6.1,R6,DM,TC-27,Must,To do
+F10_02,Upload flyer image to Supabase Storage,US-6.2,R6,SM,TC-28,Must,To do
+F10_03,Review and edit parsed fields before publishing,US-6.3,R6,SM,TC-29,Must,To do
+F15_01,"Build Share to Engage+ extension, offered after first paste-box post",US-6.4,R6,SM,TC-30,Should,To do
+F15_02,Write plain-language permission screen; limit scope to instagram.com,US-6.5,R6,SM,TC-31,Should,To do
+F15_03,Submit partial data when a field isn't found,US-6.6,R6,SM,TC-32,Should,To do
+F22_01,Generate occurrences from a recurrence rule,US-6.7,R12,SM,TC-33,Could,To do
+F16_01,Build chat page that accepts free-text questions,US-7.1,R7,DM,TC-34,Should,To do
+F16_02,Return a one-line reason with each result,US-7.2,R7,DM,TC-35,Should,To do
+F16_03,Interpret time words like now and this afternoon,US-7.3,R7,DM,TC-36,Should,To do
+F2_05,RSVP directly from a chat result,US-7.4,R7,PF,TC-37,Should,To do
+F17_01,"Send and accept mutual friend requests, no cap",US-8.1,R8,JM,TC-38,Should,To do
+F17_02,Show friends who RSVP'd on feed event cards,US-8.2,R8,JM,TC-39,Should,To do
+F18_01,Add global Hide my RSVPs from friends toggle,US-8.3,R8,JM,TC-40,Should,To do
+F24_01,Track referrals and award badge at 3 qualifying referrals,US-8.4,R14,AD,TC-41,Could,To do
+F19_01,Tag multiple orgs on one event (EventCohost),US-9.1,R9,SM,TC-42,Should,To do
+F7_02,Show event on each co-host's page and notify all co-hosts' followers once,US-9.2,R9,JM,TC-43,Should,To do
+F19_02,Limit edit and delete rights to the primary org,US-9.3,R9,SM,TC-44,Should,To do
+F8_03,Include co-hosted RSVPs in each co-host's analytics,US-9.4,R9,SM,TC-45,Should,To do
+F20_01,Build Calendar page of RSVP'd events,US-10.1,R10,JM,TC-46,Should,To do
+F20_02,Generate .ics file from RSVP'd events,US-10.2,R10,JM,TC-47,Should,To do
+F20_03,Confirm import works in major calendar apps,US-10.3,R10,JM,TC-48,Should,To do
