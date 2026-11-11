@@ -3,6 +3,7 @@
 import { getHealth } from "../lib/api";
 import { useAsync } from "../lib/useAsync";
 import { ErrorState, LoadingState } from "../components/Status";
+import { FeedbackPrompt } from "../components/FeedbackPrompt";
 
 export function HomePage() {
   const health = useAsync(getHealth);
@@ -15,6 +16,8 @@ export function HomePage() {
           Swipe through events and student orgs. Right to RSVP or follow, left to skip.
         </p>
       </div>
+
+      <FeedbackPrompt />
 
       <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">System status</h2>

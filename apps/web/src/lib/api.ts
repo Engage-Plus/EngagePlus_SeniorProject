@@ -5,6 +5,8 @@ import {
   ApiErrorSchema,
   ChatResponseSchema,
   HealthResponseSchema,
+  PendingFeedbackResponseSchema,
+  SubmitFeedbackResponseSchema,
   type ChatRequest,
 } from "@engageplus/shared";
 
@@ -51,3 +53,6 @@ export function apiPost<S extends z.ZodType>(path: string, body: unknown, schema
 
 export const getHealth = () => apiGet("/health", HealthResponseSchema);
 export const askChat = (req: ChatRequest) => apiPost("/chat", req, ChatResponseSchema);
+export const getPendingFeedback = () => apiGet("/feedback/pending", PendingFeedbackResponseSchema);
+export const sendFeedback = (eventId: string, thumbsUp: boolean) =>
+  apiPost(`/feedback/${encodeURIComponent(eventId)}`, { thumbsUp }, SubmitFeedbackResponseSchema);
