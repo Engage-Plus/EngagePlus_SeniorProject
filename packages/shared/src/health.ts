@@ -8,6 +8,14 @@ export const HealthResponseSchema = z.object({
 });
 export type HealthResponse = z.infer<typeof HealthResponseSchema>;
 
+/** GET /health/db: proves the API can read from Postgres/Supabase (TR6, TC-57; risk H2). */
+export const DbHealthResponseSchema = z.object({
+  status: z.enum(["ok", "error"]),
+  db: z.enum(["ok", "unreachable"]),
+  latencyMs: z.number().nonnegative(),
+});
+export type DbHealthResponse = z.infer<typeof DbHealthResponseSchema>;
+
 /** Every API error body has this shape. */
 export const ApiErrorSchema = z.object({
   error: z.string(),

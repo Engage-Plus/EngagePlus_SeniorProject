@@ -3,7 +3,8 @@
 // `/api` proxy (Vite in dev, Vercel rewrite in prod) so cookies stay same-site.
 import express, { type Express, type RequestHandler } from "express";
 import cookieParser from "cookie-parser";
-import { healthRouter } from "./routes/health.js";
+import { pingDb } from "./db.js";
+import { healthRouter, type PingDb } from "./routes/health.js";
 import { parseCaptionRouter } from "./routes/parseCaption.js";
 import { denyUntilAuthIsWired } from "./middleware/auth.js";
 import { errorHandler, notFound } from "./middleware/errors.js";
@@ -15,6 +16,8 @@ export interface AppDeps {
   /** Gemini client; null/undefined = AI features use their non-AI fallbacks. */
   model?: JsonModel | null;
   now?: () => Date;
+  /** DB round trip for GET /health/db. Defaults to Prisma `SELECT 1`. */
+  pingDb?: PingDb;
 }
 
 export function createApp(deps: AppDeps = {}): Express {
@@ -27,7 +30,7 @@ export function createApp(deps: AppDeps = {}): Express {
   app.use(express.json({ limit: "1mb" }));
   app.use(cookieParser());
 
-  app.use(healthRouter());
+  app.use(healthRouter(deps.pingDb ?? pingDb));
   app.use(parseCaptionRouter({ requireUser, model, now: deps.now }));
   // More feature routers (auth, events, orgs, ...) get mounted here.
 
