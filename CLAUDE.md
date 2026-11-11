@@ -112,7 +112,7 @@ Priority: Must = steps 1–24 · Could = steps 25–30. Update only your own row
 |---|---|---|---|---|---|---|---|---|
 | 21 | TR4 | Jest + Playwright suites | Must | PF | TC-55 | ⬜ | | |
 | 22 | TR5 | CI/CD with GitHub Actions | Must | AD | TC-56 | ⬜ | | |
-| 23 | TR6 | Deploy: Vercel, Render, Supabase | Must | DM | TC-57 | ⬜ | | `/api` rewrite for same-site cookies |
+| 23 | TR6 | Deploy: Vercel, Render, Supabase | Must | DM | TC-57 | 🟨 | `TR6-deploy-config` | DM (Claude): deploy config; stacked on #3. `/api` rewrite for same-site cookies |
 | 24 | TR7 | Polish: responsive, loading, errors | Must | PF | TC-58 | ⬜ | | |
 
 ### Could (steps 25–30) — start only after every Must test passes
