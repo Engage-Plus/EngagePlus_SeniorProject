@@ -75,6 +75,20 @@ export function weekdayName(date: string): string {
   return WEEKDAYS[weekdayOf(date)] ?? "";
 }
 
+const displayFormat = new Intl.DateTimeFormat("en-US", {
+  timeZone: NY_TZ,
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+});
+
+/** "Fri, Nov 13, 6:00 PM" in New York time (for reasons and prompts). */
+export function formatNy(d: Date): string {
+  return displayFormat.format(d);
+}
+
 /** Converts a New York wall-clock date + "HH:MM" to the UTC instant. */
 export function nyLocalToUtc(date: string, time: string): Date {
   const [y, m, d] = date.split("-").map(Number);

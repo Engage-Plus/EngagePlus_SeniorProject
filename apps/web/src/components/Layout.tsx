@@ -9,6 +9,14 @@ export function Layout() {
           <Link to="/" className="text-lg font-bold tracking-tight text-brand-600">
             Engage+
           </Link>
+          <nav aria-label="Main">
+            <Link
+              to="/chat"
+              className="inline-flex min-h-11 items-center px-2 text-sm font-semibold text-slate-700 hover:text-brand-600"
+            >
+              Ask
+            </Link>
+          </nav>
         </div>
       </header>
 
