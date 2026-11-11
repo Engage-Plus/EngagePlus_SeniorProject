@@ -101,7 +101,7 @@ Priority: Must = steps 1–24 · Could = steps 25–30. Update only your own row
 | 14 | F1 | Org discovery quiz | R1 | Must | PF | F1_01, F1_02 | TC-01, 06 | ⬜ | | |
 | 15 | F4 | Trending feed | R1 | Must | PF | F4_01 | TC-04 | ⬜ | | |
 | 16 | F20 | Calendar export (.ics) | R10 | Should | JM | F20_01–F20_03 | TC-46, 47, 48 | ⬜ | | |
-| 17 | F5 | Post-event feedback | R1 R3 | Must | DM | F5_01 | TC-05 | 🟨 | `F5_01-post-event-feedback` | DM (Claude) building; stacked on #5 |
+| 17 | F5 | Post-event feedback | R1 R3 | Must | DM | F5_01 | TC-05 | 🟦 | [#6](https://github.com/Engage-Plus/EngagePlus_SeniorProject/pull/6) | Works behind auth; Prisma repo needs TR3 migrations |
 | 18 | F17 | Friend connections + friends' RSVPs | R8 | Should | JM | F17_01, F17_02 | TC-38, 39 | ⬜ | | |
 | 18 | F18 | Hide my RSVPs toggle | R8 | Should | JM | F18_01 | TC-40 | ⬜ | | |
 | 19 | F15 | Browser extension (Manifest V3) | R6 | Should | SM | F15_01–F15_03 | TC-30, 31, 32 | ⬜ | | Submit to store ≥ 2 weeks before demo |
