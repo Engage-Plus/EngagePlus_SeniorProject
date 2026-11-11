@@ -79,7 +79,7 @@ Priority: Must = steps 1–24 · Could = steps 25–30. Update only your own row
 ### Foundation (steps 1–4)
 | Step | ID | Item | Req | Pri | Owner | Tests | Status | Branch / PR | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | TR1 | Project setup: Vite React TS, Express TS, Prisma, Tailwind | — | Must | DM | TC-52 | ⬜ | | |
+| 1 | TR1 | Project setup: Vite React TS, Express TS, Prisma, Tailwind | — | Must | DM | TC-52 | 🟨 | `TR1-project-setup` | DM (Claude) building |
 | 2 | TR2 | Docker + Docker Compose | — | Must | AD | TC-53 | ⬜ | | compose file in docs/06 |
 | 3 | F21 | Microsoft OAuth + roles (Howard tenant only) | R11 | Must | AD | TC-15, TC-17 | 🟨 | | Starter code done, 4/4 unit tests pass; live Howard sign-in pending |
 | 3 | F9 | Org creation gate + manager invites | R4, R11 | Must | AD | TC-18, TC-19 | ⬜ | | Org email one-time code (D9) |
