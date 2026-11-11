@@ -3,11 +3,14 @@
 // `/api` proxy (Vite in dev, Vercel rewrite in prod) so cookies stay same-site.
 import express, { type Express, type RequestHandler } from "express";
 import cookieParser from "cookie-parser";
-import { pingDb } from "./db.js";
+import { db, pingDb } from "./db.js";
+import { chatRouter } from "./routes/chat.js";
 import { healthRouter, type PingDb } from "./routes/health.js";
 import { parseCaptionRouter } from "./routes/parseCaption.js";
 import { denyUntilAuthIsWired } from "./middleware/auth.js";
 import { errorHandler, notFound } from "./middleware/errors.js";
+import { prismaCandidateSource } from "./services/chat/dbSource.js";
+import type { CandidateSource } from "./services/chat/index.js";
 import type { JsonModel } from "./services/gemini.js";
 
 export interface AppDeps {
@@ -18,6 +21,8 @@ export interface AppDeps {
   now?: () => Date;
   /** DB round trip for GET /health/db. Defaults to Prisma `SELECT 1`. */
   pingDb?: PingDb;
+  /** Events for POST /chat. Defaults to published events from Prisma. */
+  chatCandidates?: CandidateSource;
 }
 
 export function createApp(deps: AppDeps = {}): Express {
@@ -32,6 +37,14 @@ export function createApp(deps: AppDeps = {}): Express {
 
   app.use(healthRouter(deps.pingDb ?? pingDb));
   app.use(parseCaptionRouter({ requireUser, model, now: deps.now }));
+  app.use(
+    chatRouter({
+      requireUser,
+      model,
+      now: deps.now,
+      loadCandidates: deps.chatCandidates ?? prismaCandidateSource(db),
+    }),
+  );
   // More feature routers (auth, events, orgs, ...) get mounted here.
 
   app.use(notFound);
