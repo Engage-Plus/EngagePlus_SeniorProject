@@ -1,0 +1,54 @@
+# Render Blueprint for the Engage+ API (TR6). Render dashboard -> New -> Blueprint -> pick this repo.
+# Free plan only (NFR5 / TC-51). The service name sets the URL https://engageplus-api.onrender.com,
+# which apps/web/vercel.json rewrites /api/* to. If you rename it, update vercel.json too.
+services:
+  - type: web
+    name: engageplus-api
+    runtime: node
+    plan: free
+    region: virginia
+    branch: main
+    autoDeploy: true
+    buildCommand: npm ci --include=dev && npm run build:shared && npm run build -w @engageplus/api
+    startCommand: npm start -w @engageplus/api
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DEV_AUTH
+        value: "false" # never true in production (CLAUDE.md)
+      - key: TZ_DEFAULT
+        value: America/New_York
+      - key: WEB_ORIGIN
+        sync: false # e.g. https://engageplus.vercel.app
+      # Supabase -> Project Settings -> Database. Pooled (6543, ?pgbouncer=true) for the app,
+      # direct (5432) for migrations.
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_FLYER_BUCKET
+        value: flyers
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: JOBS_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        sync: false
+      # Microsoft login (AD, F21): MS_CLIENT_ID, MS_CLIENT_SECRET, MS_REDIRECT_URI, HOWARD_TENANT_ID
+      - key: MS_CLIENT_ID
+        sync: false
+      - key: MS_CLIENT_SECRET
+        sync: false
+      - key: MS_REDIRECT_URI
+        sync: false # https://<app>.vercel.app/api/auth/microsoft/callback
+      - key: HOWARD_TENANT_ID
+        sync: false

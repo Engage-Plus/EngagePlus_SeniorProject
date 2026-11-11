@@ -9,6 +9,11 @@ export function db(): PrismaClient {
   return client;
 }
 
+/** Cheapest possible round trip to Postgres (used by GET /health/db). */
+export async function pingDb(): Promise<void> {
+  await db().$queryRaw`SELECT 1`;
+}
+
 export async function disconnectDb(): Promise<void> {
   if (client) await client.$disconnect();
   client = undefined;
