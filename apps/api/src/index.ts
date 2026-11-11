@@ -2,10 +2,13 @@
 import { createApp } from "./app.js";
 import { disconnectDb } from "./db.js";
 import { loadEnv } from "./env.js";
+import { geminiFromEnv } from "./services/gemini.js";
 
 const env = loadEnv();
-const server = createApp().listen(env.PORT, () => {
+const model = geminiFromEnv();
+const server = createApp({ model }).listen(env.PORT, () => {
   console.log(`Engage+ API listening on http://localhost:${env.PORT}`);
+  if (!model) console.log("GEMINI_API_KEY not set: AI features use their non-AI fallbacks");
 });
 
 function shutdown(): void {
