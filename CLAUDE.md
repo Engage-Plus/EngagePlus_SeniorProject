@@ -97,7 +97,7 @@ Priority: Must = steps 1–24 · Could = steps 25–30. Update only your own row
 | 10 | F14 | AI caption parser (Gemini) | R6 | Must | DM | F14_01 | TC-27 | 🟦 | [#2](https://github.com/Engage-Plus/EngagePlus_SeniorProject/pull/2) | Stacked on #1. Endpoint 401 until F21 wires `requireUser` |
 | 11 | F10 | Event posting form + flyer upload | R4 R6 | Must | SM | F10_01–F10_03 | TC-20, 28, 29 | ⬜ | | |
 | 12 | F3 | AI recommendation engine | R1 | Must | DM | F3_01 | TC-02 | 🟦 | [#3](https://github.com/Engage-Plus/EngagePlus_SeniorProject/pull/3) | Ranking service done; `GET /events/feed` route needs TR3 |
-| 13 | F16 | AI chat assistant | R7 | Should | DM | F16_01–F16_03 | TC-34, 35, 36 | ⬜ | | |
+| 13 | F16 | AI chat assistant | R7 | Should | DM | F16_01–F16_03 | TC-34, 35, 36 | 🟨 | `F16-chat-assistant` | DM (Claude) building; stacked on #4 |
 | 14 | F1 | Org discovery quiz | R1 | Must | PF | F1_01, F1_02 | TC-01, 06 | ⬜ | | |
 | 15 | F4 | Trending feed | R1 | Must | PF | F4_01 | TC-04 | ⬜ | | |
 | 16 | F20 | Calendar export (.ics) | R10 | Should | JM | F20_01–F20_03 | TC-46, 47, 48 | ⬜ | | |
