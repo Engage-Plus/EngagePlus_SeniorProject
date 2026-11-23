@@ -1,6 +1,6 @@
 # Engage+ demo script
 
-**Length:** about 6 minutes (≈850 spoken words) · **Presenter:** one narrator · **Format:** screen recording with voice-over, or a live demo
+**Length:** about 6 minutes (≈650 spoken words plus pauses for clicks) · **Presenter:** one narrator · **Format:** screen recording with voice-over, or a live demo
 **App:** https://engage-plus.github.io/EngagePlus_SeniorProject/ (or locally: `cd apps/demo && npm ci && npm run dev`)
 **Setup:** follow [demo-runbook.md](demo-runbook.md) first, and always **Reset demo data** before a take.
 
