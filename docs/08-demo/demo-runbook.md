@@ -5,7 +5,7 @@ Use with [demo-script.md](demo-script.md).
 ## The demo app
 
 - **Live:** https://engage-plus.github.io/EngagePlus_SeniorProject/ (deploys from `main` via `.github/workflows/demo-pages.yml`)
-- **Local:** `cd apps/demo && npm ci && npm run dev`, then open http://localhost:5173 (or the port Vite prints)
+- **Local:** `cd apps/demo && npm ci && npm run dev`, then open http://localhost:8080 (or the port Vite prints)
 - **No backend.** All data is example data saved in the browser (`localStorage`, key `engageplus-demo`). Nothing can go stale, pause, or need a password.
 - **Dates are always fresh.** The data reseeds on the first visit each day (New York time), so events always fall within the next two weeks.
 - **Reset between takes:** Sign in page → **Reset demo data**. This clears RSVPs, swipes, follows, quiz answers and posted events.
