@@ -1,35 +1,18 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { AppShell } from "@/components/AppShell";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { AtSign, BadgeCheck } from "lucide-react";
+import { AppShell, PageLoading } from "@/components/AppShell";
 import { CategoryPill, EventCard, FollowButton } from "@/components/EventBits";
-
-const orgQuery = (id: string) =>
-  queryOptions({
-    queryKey: ["org", id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("organizations")
-        .select("*, events(*, organizations(id, name))")
-        .eq("id", id)
-        .maybeSingle();
-      if (error) throw error;
-      return data;
-    },
-  });
+import { useDemo } from "@/lib/demo/store";
+import { followerCount, upcomingEvents } from "@/lib/demo/logic";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/orgs/$id")({
-  loader: async ({ context, params }) => {
-    const o = await context.queryClient.ensureQueryData(orgQuery(params.id));
-    if (!o) throw notFound();
-    return o;
-  },
-  head: ({ loaderData }) => ({
+  head: () => ({
     meta: [
-      { title: `${loaderData?.name ?? "Organization"} — Engage+` },
-      { name: "description", content: loaderData?.description ?? "Howard student organization" },
-      { property: "og:title", content: `${loaderData?.name ?? "Organization"} — Engage+` },
-      { property: "og:description", content: loaderData?.description ?? "Howard student organization" },
+      { title: "Organization — Engage+" },
+      { name: "description", content: "Howard student organization on Engage+" },
+      { property: "og:title", content: "Organization — Engage+" },
+      { property: "og:description", content: "Howard student organization on Engage+" },
     ],
   }),
   component: OrgPage,
@@ -37,22 +20,51 @@ export const Route = createFileRoute("/orgs/$id")({
 
 function OrgPage() {
   const { id } = Route.useParams();
-  const { data: org } = useSuspenseQuery(orgQuery(id));
-  if (!org) return null;
-  const upcoming = [...org.events]
-    .filter((e) => new Date(e.starts_at).getTime() > Date.now() - 6 * 3600e3)
-    .sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+  const s = useDemo();
+  if (!s.ready)
+    return (
+      <AppShell>
+        <PageLoading />
+      </AppShell>
+    );
+  const org = s.orgs.find((o) => o.id === id);
+  if (!org)
+    return (
+      <AppShell>
+        <div className="rounded-2xl border border-dashed p-10 text-center">
+          <p className="mb-4 text-muted-foreground">We couldn't find that organization.</p>
+          <Button variant="bison" asChild>
+            <Link to="/orgs">All organizations</Link>
+          </Button>
+        </div>
+      </AppShell>
+    );
+  const upcoming = upcomingEvents(s).filter((e) => e.org_id === org.id);
   return (
     <AppShell>
       <section className="mb-6 rounded-3xl bg-hero p-8 text-primary-foreground">
         <CategoryPill category={org.category} />
-        <h1 className="mt-3 font-display text-3xl font-extrabold md:text-5xl">{org.name}</h1>
+        <h1 className="mt-3 flex items-center gap-2 font-display text-3xl font-extrabold md:text-5xl">
+          {org.name}{" "}
+          {org.verified && <BadgeCheck className="size-7 shrink-0" aria-label="Verified" />}
+        </h1>
         <p className="mt-3 max-w-2xl opacity-90">{org.description}</p>
-        <div className="mt-5"><FollowButton orgId={org.id} /></div>
+        <p className="mt-3 flex items-center gap-3 text-sm opacity-90">
+          <span className="flex items-center gap-1">
+            <AtSign className="size-3.5" />
+            {org.handle}
+          </span>
+          <span>{followerCount(s, org.id).toLocaleString()} followers</span>
+        </p>
+        <div className="mt-5">
+          <FollowButton orgId={org.id} />
+        </div>
       </section>
       <h2 className="mb-3 font-display text-2xl font-bold">Upcoming events</h2>
       <div className="grid gap-3">
-        {upcoming.map((e) => <EventCard key={e.id} event={e} />)}
+        {upcoming.map((e) => (
+          <EventCard key={e.id} event={e} />
+        ))}
         {upcoming.length === 0 && <p className="text-muted-foreground">No upcoming events yet.</p>}
       </div>
     </AppShell>

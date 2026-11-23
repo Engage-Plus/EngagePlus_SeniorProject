@@ -1,24 +1,15 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import type { User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import type { ReactNode } from "react";
+import { useDemo } from "./demo/store";
+import { currentUser } from "./demo/logic";
+import type { Person } from "./demo/types";
 
-type AuthState = { user: User | null; loading: boolean };
-const AuthContext = createContext<AuthState>({ user: null, loading: true });
-
+// Demo sign-in: one click as a fictional student or org manager. Production uses
+// Microsoft sign-in limited to Howard's tenant (F21); this stands in for it on camera.
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AuthState>({ user: null, loading: true });
-  useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((_e, session) => {
-      setState({ user: session?.user ?? null, loading: false });
-    });
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setState({ user: session?.user ?? null, loading: false });
-    });
-    return () => data.subscription.unsubscribe();
-  }, []);
-  return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
+  return <>{children}</>;
 }
 
-export const useAuth = () => useContext(AuthContext);
-
-export const HOWARD_EMAIL = /^[^\s@]+@(bison\.)?howard\.edu$/i;
+export function useAuth(): { user: Person | null; loading: boolean } {
+  const s = useDemo();
+  return { user: s.ready ? currentUser(s) : null, loading: !s.ready };
+}

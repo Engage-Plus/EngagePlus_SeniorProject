@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CreateRouteImport } from './routes/create'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MyEventsRouteImport } from './routes/my-events'
+import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as SwipeRouteImport } from './routes/swipe'
 import { Route as EventsIdRouteImport } from './routes/events.$id'
 import { Route as OrgsIndexRouteImport } from './routes/orgs.index'
 import { Route as OrgsIdRouteImport } from './routes/orgs.$id'
@@ -27,6 +30,11 @@ const CreateRoute = CreateRouteImport.update({
   path: '/create',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -35,6 +43,16 @@ const LoginRoute = LoginRouteImport.update({
 const MyEventsRoute = MyEventsRouteImport.update({
   id: '/my-events',
   path: '/my-events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SwipeRoute = SwipeRouteImport.update({
+  id: '/swipe',
+  path: '/swipe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EventsIdRoute = EventsIdRouteImport.update({
@@ -56,8 +74,11 @@ const OrgsIdRoute = OrgsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/my-events': typeof MyEventsRoute
+  '/quiz': typeof QuizRoute
+  '/swipe': typeof SwipeRoute
   '/events/$id': typeof EventsIdRoute
   '/orgs/$id': typeof OrgsIdRoute
   '/orgs/': typeof OrgsIndexRoute
@@ -65,8 +86,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/my-events': typeof MyEventsRoute
+  '/quiz': typeof QuizRoute
+  '/swipe': typeof SwipeRoute
   '/events/$id': typeof EventsIdRoute
   '/orgs/$id': typeof OrgsIdRoute
   '/orgs': typeof OrgsIndexRoute
@@ -75,8 +99,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/my-events': typeof MyEventsRoute
+  '/quiz': typeof QuizRoute
+  '/swipe': typeof SwipeRoute
   '/events/$id': typeof EventsIdRoute
   '/orgs/$id': typeof OrgsIdRoute
   '/orgs/': typeof OrgsIndexRoute
@@ -86,8 +113,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/create'
+    | '/dashboard'
     | '/login'
     | '/my-events'
+    | '/quiz'
+    | '/swipe'
     | '/events/$id'
     | '/orgs/$id'
     | '/orgs/'
@@ -95,8 +125,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/create'
+    | '/dashboard'
     | '/login'
     | '/my-events'
+    | '/quiz'
+    | '/swipe'
     | '/events/$id'
     | '/orgs/$id'
     | '/orgs'
@@ -104,8 +137,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/create'
+    | '/dashboard'
     | '/login'
     | '/my-events'
+    | '/quiz'
+    | '/swipe'
     | '/events/$id'
     | '/orgs/$id'
     | '/orgs/'
@@ -114,8 +150,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
+  DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   MyEventsRoute: typeof MyEventsRoute
+  QuizRoute: typeof QuizRoute
+  SwipeRoute: typeof SwipeRoute
   EventsIdRoute: typeof EventsIdRoute
   OrgsIdRoute: typeof OrgsIdRoute
   OrgsIndexRoute: typeof OrgsIndexRoute
@@ -137,6 +176,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -149,6 +195,20 @@ declare module '@tanstack/react-router' {
       path: '/my-events'
       fullPath: '/my-events'
       preLoaderRoute: typeof MyEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/swipe': {
+      id: '/swipe'
+      path: '/swipe'
+      fullPath: '/swipe'
+      preLoaderRoute: typeof SwipeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/events/$id': {
@@ -178,8 +238,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
+  DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   MyEventsRoute: MyEventsRoute,
+  QuizRoute: QuizRoute,
+  SwipeRoute: SwipeRoute,
   EventsIdRoute: EventsIdRoute,
   OrgsIdRoute: OrgsIdRoute,
   OrgsIndexRoute: OrgsIndexRoute,
