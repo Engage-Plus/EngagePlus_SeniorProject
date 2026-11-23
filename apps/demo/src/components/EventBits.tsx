@@ -34,7 +34,7 @@ export function EventCard({ event }: { event: EventWithOrg }) {
   const w = formatWhen(event.starts_at);
   const clash = s.userId ? conflictingClass(event, s.classes[s.userId] ?? []) : null;
   return (
-    <div className="flex gap-4 rounded-2xl border bg-card p-4 shadow-card transition hover:-translate-y-0.5">
+    <div className="flex min-w-0 gap-4 rounded-2xl border bg-card p-4 shadow-card transition hover:-translate-y-0.5">
       <div className="flex w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-primary py-2 text-primary-foreground">
         <span className="text-xs uppercase opacity-80">{w.day}</span>
         <span className="font-display text-lg font-bold leading-tight">{w.date}</span>
@@ -55,8 +55,9 @@ export function EventCard({ event }: { event: EventWithOrg }) {
         <p className="truncate text-sm text-muted-foreground">
           {event.organizations?.name} · {w.time}
         </p>
-        <p className="mt-1 flex items-center gap-1 truncate text-sm text-muted-foreground">
-          <MapPin className="size-3.5" /> {event.location}
+        <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
+          <MapPin className="size-3.5 shrink-0" />
+          <span className="truncate">{event.location}</span>
         </p>
         <FriendsGoing eventId={event.id} />
         {clash && (

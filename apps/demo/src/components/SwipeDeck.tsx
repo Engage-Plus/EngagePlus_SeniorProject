@@ -26,7 +26,11 @@ export function SwipeDeck({ recs }: { recs: Recommendation[] }) {
     if (!top) return;
     actions.swipe(top.event.id, action);
     setDrag({ x: 0, y: 0, active: false });
-    setFlash(`${LABEL[action]}: ${top.event.title}`);
+    setFlash(
+      action === "follow"
+        ? `Following ${top.event.organizations?.name ?? "org"}`
+        : `${LABEL[action]}: ${top.event.title}`,
+    );
   }
 
   useEffect(() => {
@@ -93,7 +97,7 @@ export function SwipeDeck({ recs }: { recs: Recommendation[] }) {
           }}
         >
           <div
-            className={`relative flex h-48 shrink-0 flex-col justify-end bg-gradient-to-br p-5 text-primary-foreground ${catGradient[e.category]}`}
+            className={`relative flex h-36 shrink-0 flex-col justify-end bg-gradient-to-br p-5 text-primary-foreground ${catGradient[e.category]}`}
           >
             {hint && (
               <span className="absolute right-4 top-4 rounded-full bg-card px-3 py-1 text-sm font-bold uppercase text-foreground shadow">
